@@ -46,11 +46,14 @@ int main() {
 		1
 	};
 
+	/*
 	Node* pHead = createNode(NULL, 0, t3);
 	createNode(pHead, 1, t1);
 	createNode(pHead, 1, t2);
 	createNode(pHead, 1, t3);
-	pHead = createNode(pHead, 0, t1);
+	pHead = createNode(pHead, 0, t1);*/
+
+	Node* pHead = load(INFILE);
 	
 	display(pHead, NULL);
 

@@ -3,6 +3,9 @@
 
 #define _CRT_SECURE_NO_WARNINGS
 
+#define INFILE "test.csv"
+#define OUTFILE "test.csv"
+
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
@@ -33,6 +36,9 @@ typedef struct node {
 //if pHead is passed as target with 0 then returned node will become new head
 //returns NULL on error
 Node* createNode(Node* target, int order, Record data);
+
+//converts time string "0:00" to two integers
+//void convertTimeST(char* timeS, int* minutes, int* seconds);
 
 //enter title and options seperated by comma (limit 400 chars for options)
 void pMenu(char* title, char* options, int numOptions);

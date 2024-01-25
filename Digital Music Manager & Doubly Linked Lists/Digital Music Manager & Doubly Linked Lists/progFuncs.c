@@ -15,6 +15,71 @@ typedef struct duration {
 	int Seconds;
 }Duration;
 */
+
+//load csv file to linked list
+//returns head of list created/ null if error or no input
+Node* load(char* fileName) {
+	FILE* infile = fopen(fileName, "r");
+
+	char buffer[200] = "\0";
+	char* start = buffer;
+
+	Node* target = NULL;
+	
+	Duration tempD;
+	Record tempR;
+
+	if (infile != NULL) {
+		while (fgets(buffer, 200, infile) != NULL) {
+			strtok(buffer, ",");
+
+			//copy artist //TODO BROKEN
+			if (*start == '"') {
+				strcpy(tempR.Artist, start);
+				start = strtok(NULL, ",");
+				strcpy(tempR.Artist, start);
+				start = strtok(NULL, ",");
+			}
+			else {
+				strcpy(tempR.Artist, start);
+				start = strtok(NULL, ",");
+			}
+			
+			//copy album
+			strcpy(tempR.Album_title, start);
+			start = strtok(NULL, ",");
+			//copy song title
+			strcpy(tempR.Song_title, start);
+			start = strtok(NULL, ",");
+			//copy Genre
+			strcpy(tempR.Genre, start);
+			start = strtok(NULL, ",");
+			//copy duration
+			sscanf(start, "%d:%d", &tempD.Minutes, &tempD.Seconds);
+			tempR.Song_length = tempD;
+			start = strtok(NULL, ",");
+			//copy rating
+			tempR.Rating = atoi(start);
+
+			target = createNode(target, 0, tempR);
+		}
+		//// get head of list to return
+		//while (target->prev != NULL) {
+		//	target = target->prev;
+		//}
+
+		return target;
+
+		fclose(infile);
+	}
+	else {
+		printf("ERROR load- couldn't open file");
+	}
+
+	return NULL;
+}
+
+
 void display(Node* pHead, char* artist) {
 	Node* temp = pHead;
 
