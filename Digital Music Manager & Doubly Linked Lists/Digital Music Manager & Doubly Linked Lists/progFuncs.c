@@ -31,20 +31,24 @@ Node* load(char* fileName) {
 
 	if (infile != NULL) {
 		while (fgets(buffer, 200, infile) != NULL) {
-			strtok(buffer, ",");
+			int i = 0;
 
-			//copy artist //TODO BROKEN
-			if (*start == '"') {
+			start = buffer;
+
+			//copy artist
+			if (*start == '\"') {
+				start = strtok(buffer, "\"");
 				strcpy(tempR.Artist, start);
-				start = strtok(NULL, ",");
-				strcpy(tempR.Artist, start);
-				start = strtok(NULL, ",");
+				start = strtok(NULL, "\"");
+				start++;
+				strtok(start, ",");
 			}
 			else {
+				strtok(buffer, ",");
 				strcpy(tempR.Artist, start);
 				start = strtok(NULL, ",");
 			}
-			
+
 			//copy album
 			strcpy(tempR.Album_title, start);
 			start = strtok(NULL, ",");
