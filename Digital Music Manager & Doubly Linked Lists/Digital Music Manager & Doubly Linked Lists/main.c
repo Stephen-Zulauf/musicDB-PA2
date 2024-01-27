@@ -10,8 +10,8 @@ int main() {
 
 	Record t1 = {
 		"Swift, Taylor",
-		"1989",
-		"Shake it Off",
+		"Cats the motion picture",
+		"Im a cat look at my butthole",
 		"Pop",
 		dur1,
 		12,
@@ -56,6 +56,8 @@ int main() {
 	Node* pHead = load(INFILE);
 	
 	display(pHead, NULL);
+
+	store(pHead);
 
 	//menuMain();
 

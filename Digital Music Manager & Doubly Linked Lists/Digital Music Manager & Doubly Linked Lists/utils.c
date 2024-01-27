@@ -44,9 +44,9 @@ Node* createNode(Node* target, int order, Record data) {
 			newNode->next = target->next;
 			newNode->prev = target;
 			target->next = newNode;
-			if (target->next != NULL) {
+			/*if (target->next != NULL) {
 				target->next->prev = newNode;
-			}
+			}*/
 
 			return newNode;
 		}
@@ -60,19 +60,6 @@ Node* createNode(Node* target, int order, Record data) {
 
 	return NULL;
 }
-
-////converts time string "0:00" to two integers
-//void convertTimeST(char* timeS, int* minutes, int* seconds) {
-//	char* buffer[20];
-//	char* start = buffer;
-//
-//	strcpy(buffer, timeS);
-//	strtok(buffer, ":");
-//	*minutes = atoi(start);
-//	start = strtok(NULL, ":");
-//	*seconds = atoi(start);
-//
-//}
 
 //enter title each option seperated by comma (limit 400 chars)
 void pMenu(char* title, char* options, int numOptions) {

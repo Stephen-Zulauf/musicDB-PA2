@@ -62,15 +62,20 @@ Node* load(char* fileName) {
 			sscanf(start, "%d:%d", &tempD.Minutes, &tempD.Seconds);
 			tempR.Song_length = tempD;
 			start = strtok(NULL, ",");
+			//copy plays
+			tempR.Plays = atoi(start);
+			start = strtok(NULL, ",");
 			//copy rating
 			tempR.Rating = atoi(start);
 
-			target = createNode(target, 0, tempR);
+			target = createNode(target, 1, tempR);
+			//printf("%d\n", target->prev);
 		}
-		//// get head of list to return
-		//while (target->prev != NULL) {
-		//	target = target->prev;
-		//}
+
+		//return front of list created
+		while (target->prev != NULL) {
+			target = target->prev;
+		}
 
 		return target;
 
@@ -81,6 +86,35 @@ Node* load(char* fileName) {
 	}
 
 	return NULL;
+}
+
+void store(Node* pHead) {
+	FILE* outFile = fopen(OUTFILE, "w");
+
+	Node* temp = pHead;
+
+	if (outFile != NULL) {
+		while (temp != NULL) {
+			fprintf(outFile, "\"");
+			fputs(temp->data.Artist,outFile);
+			fprintf(outFile, "\",");
+			fputs(temp->data.Album_title, outFile);
+			fprintf(outFile, ",");
+			fputs(temp->data.Song_title, outFile);
+			fprintf(outFile, ",");
+			fputs(temp->data.Genre, outFile);
+			fprintf(outFile, ",");
+			fprintf(outFile, "%d:%d",temp->data.Song_length.Minutes, temp->data.Song_length.Seconds);
+			fprintf(outFile, ",");
+			fprintf(outFile, "%d",temp->data.Plays);
+			fprintf(outFile, ",");
+			fprintf(outFile, "%d\n",temp->data.Rating);
+			temp = temp->next;
+		}
+	}
+	else {
+		printf("ERROR save- couldn't open file");
+	}
 }
 
 
@@ -97,10 +131,11 @@ void display(Node* pHead, char* artist) {
 					printf("Song: %s\n", temp->data.Song_title);
 					printf("Genre: %s\n", temp->data.Genre);
 					printf("Length: %d:%d\n", temp->data.Song_length.Minutes, temp->data.Song_length.Seconds);
+					printf("Plays: %d\n", temp->data.Plays);
 					printf("Rating: %d\n", temp->data.Rating);
 					printf("----------\n");
-					temp = temp->next;
 				}
+				temp = temp->next;
 			}
 		}
 		else {
@@ -111,6 +146,7 @@ void display(Node* pHead, char* artist) {
 				printf("Song: %s\n", temp->data.Song_title);
 				printf("Genre: %s\n", temp->data.Genre);
 				printf("Length: %d:%d\n", temp->data.Song_length.Minutes, temp->data.Song_length.Seconds);
+				printf("Plays: %d\n", temp->data.Plays);
 				printf("Rating: %d\n", temp->data.Rating);
 				printf("----------\n");
 				temp = temp->next;
