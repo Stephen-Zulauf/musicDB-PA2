@@ -118,6 +118,36 @@ ResultNode* createResultNode(ResultNode* target, int order, Node* result) {
 
 }
 
+int getNumericChoice(int numChoices) {
+
+	int choice = 0;
+	char buffer[4];
+
+	while (choice == 0) {
+		//scanf("%d", &choice);
+		if (fgets(buffer, 3, stdin) != NULL) {
+
+			choice = atoi(buffer);
+
+			if (choice <= numChoices && choice != 0) {
+				return choice;
+			}
+			else {
+				choice = 0;
+				printf("please enter a valid choice");
+				strcpy(buffer, "\0\0\0");
+			}
+
+		}
+		else {
+			choice = 0;
+			printf("please enter a valid choice");
+			strcpy(buffer, "\0\0\0");
+		}
+	}
+	
+}
+
 //enter title each option seperated by comma (limit 400 chars)
 void pMenu(char* title, char* options, int numOptions) {
 	int i;

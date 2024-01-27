@@ -20,9 +20,6 @@ int display(Node* pHead, char* artist, int abv);
 //returns head of reults list, Null if no reults found TODO:deallocate search list
 ResultNode* getResultList(Node* pHead, char* artist);
 
-//get choice from user for edit menu
-ResultNode* getEdit(ResultNode* choices, int numRecords);
-
 //edit displays all records that match artist string then prompts which one to edit
 //if null passed for artist will list all records
 void edit(Node* pHead, char* artist);

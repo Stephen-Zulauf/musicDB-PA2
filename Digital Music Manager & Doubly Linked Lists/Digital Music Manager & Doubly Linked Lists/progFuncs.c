@@ -229,69 +229,86 @@ ResultNode* getResultList(Node* pHead, char* artist) {
 
 }
 
-ResultNode* getEdit(ResultNode* choices, int numRecords) {
-	ResultNode* result = choices;
-
-	int choice = 0;
-	char buffer[4];
-	int i;
-
-	while (choice == 0) {
-		//scanf("%d", &choice);
-		if (fgets(buffer, 3, stdin) != NULL) {
-
-			choice = atoi(buffer);
-
-			if (choice < numRecords && choice != 0) {
-				for (i = 1; i < choice; i++) {
-					result = result->next;
-				}
-				return result;
-			}
-			else {
-				choice = 0;
-				printf("please enter a valid choice");
-				strcpy(buffer, "\0\0\0");
-			}
-
-		}
-		else {
-			choice = 0;
-			printf("please enter a valid choice");
-			strcpy(buffer, "\0\0\0");
-		}
-	}
-	return NULL;
-}
-
+//TODO:modification of song length
 void edit(Node* pHead, char* artist) {
 	ResultNode* choices = getResultList(pHead, artist);
-	ResultNode* choice = NULL;
 	int numRecords = 0;
+	int choice = 0;
+	int fChoice = 0;
+	int i;
+	char buffer[30];
 
 	if (choices != NULL) {
+		numRecords = display(pHead, artist, 1);
 
-		while (choices != NULL) {
-			printf("----%d-----\n", (numRecords + 1));
-			printf("Artist: %s\n", choices->result->data.Artist);
-			printf("Song: %s\n", choices->result->data.Song_title);
-			printf("\n");
-
-			numRecords++;
-
-			choices = choices->next;
-		}
-		if (choices != NULL) {
-			while (choices->prev != NULL) {
-				choices = choices->prev;
+		while (choice != (numRecords + 1)) {
+			system("cls");
+			numRecords = display(pHead, artist, 1);
+			printf("Enter record number to edit(1-%d), %d to exit\n", numRecords, (numRecords + 1));
+			choice = getNumericChoice(numRecords + 1);
+			if (choice == (numRecords + 1)) {
+				break;
 			}
+			for (i = 1; i < choice; i++) {
+				choices = choices->next;
+			}
+			system("cls");
+			printf("----EDIT-----\n");
+			printf("Artist: %s\n", choices->result->data.Artist);
+			printf("Album: %s\n", choices->result->data.Album_title);
+			printf("Song: %s\n", choices->result->data.Song_title);
+			printf("Genre: %s\n", choices->result->data.Genre);
+			printf("Length: %d:%d\n", choices->result->data.Song_length.Minutes, choices->result->data.Song_length.Seconds);
+			printf("Plays: %d\n", choices->result->data.Plays);
+			printf("Rating: %d\n", choices->result->data.Rating);
+			pMenu("Edit which field?", "Artist,Album,Song,Genre,Length,Plays,Rating", 7);
+			fChoice = getNumericChoice(7);
+
+			switch (fChoice) {
+			case 1:
+				printf("Artist: --\n");
+				fgets(choices->result->data.Artist, 29, stdin);
+				//need to reset choices if artist name is changed
+				choices = getResultList(pHead, artist);
+				break;
+			case 2:
+				printf("Album Title: --\n");
+				fgets(choices->result->data.Album_title, 29, stdin);
+				break;
+			case 3:
+				printf("Song title: --\n");
+				fgets(choices->result->data.Song_title, 29, stdin);
+				break;
+			case 4:
+				printf("Genre: --\n");
+				fgets(choices->result->data.Genre, 29, stdin);
+				break;
+			case 5:
+				printf("Genre: --\n");
+				fgets(choices->result->data.Genre, 29, stdin);
+				break;
+			case 6:
+				printf("Plays: --\n");
+				fgets(buffer, 29, stdin);
+				choices->result->data.Plays = atoi(buffer);
+				break;
+			case 7:
+				printf("Rating: --\n");
+				fgets(buffer, 29, stdin);
+				choices->result->data.Rating = atoi(buffer);
+				break;
+			}
+
+			if (choices != NULL) {
+				while (choices->prev != NULL) {
+					choices = choices->prev;
+				}
+			}
+
+			choice = 0;
+			fChoice = 0;
 		}
-		printf("Enter record number to edit(1-%d)\n", numRecords);
-		choice = getEdit(choices, numRecords);
-		printf("----EDIT-----\n");
-		printf("Artist: %s\n", choice->result->data.Artist);
-		printf("Song: %s\n", choice->result->data.Song_title);
-		printf("\n");
+
 	}
 	else {
 		printf("No Records matching artist found.\n");
