@@ -61,6 +61,63 @@ Node* createNode(Node* target, int order, Record data) {
 	return NULL;
 }
 
+ResultNode* createResultNode(ResultNode* target, int order, Node* result) {
+	ResultNode* newNode = malloc(sizeof(ResultNode));
+
+	if (target == NULL) {
+		if (newNode != NULL) {
+			newNode->result = result;
+			newNode->prev = NULL;
+			newNode->next = NULL;
+			return newNode;
+		}
+		else {
+			printf("ERROR createNode; failed to allocate space for node");
+		}
+
+	}
+	else if (newNode != NULL) {
+
+		//copy data to new node
+		newNode->result = result;
+
+		//insert before
+		if (order == 0) {
+
+			//set newNode prev to target prev
+			newNode->prev = target->prev;
+			newNode->next = target;
+			//set prev nodes next to new node
+			if (target->prev != NULL) {
+				target->prev->next = newNode;
+			}
+			target->prev = newNode;
+
+			return newNode;
+		}
+		//insert after
+		else if (order == 1) {
+			newNode->next = target->next;
+			newNode->prev = target;
+			target->next = newNode;
+			/*if (target->next != NULL) {
+				target->next->prev = newNode;
+			}*/
+
+			return newNode;
+		}
+		else {
+			printf("ERROR createNode; invalid order");
+		}
+	}
+	else {
+		printf("ERROR createNode; failed to allocate space for node");
+	}
+
+	return NULL;
+
+}
+
 //enter title each option seperated by comma (limit 400 chars)
 void pMenu(char* title, char* options, int numOptions) {
 	int i;

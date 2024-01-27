@@ -73,10 +73,12 @@ Node* load(char* fileName) {
 		}
 
 		//return front of list created
-		while (target->prev != NULL) {
-			target = target->prev;
+		if (target != NULL) {
+			while (target->prev != NULL) {
+				target = target->prev;
+			}
 		}
-
+		
 		return target;
 
 		fclose(infile);
@@ -118,13 +120,47 @@ void store(Node* pHead) {
 }
 
 
-void display(Node* pHead, char* artist) {
+int display(Node* pHead, char* artist, int abv) {
 	Node* temp = pHead;
+	int printed = 0;
 
 	if (pHead != NULL) {
 		if (artist != NULL) {
 			while (temp != NULL) {
 				if (strcmp(artist, temp->data.Artist) == 0) {
+					if (abv == 1) {
+						printf("----%d-----\n", (printed + 1));
+						printf("Artist: %s\n", temp->data.Artist);
+						printf("Song: %s\n", temp->data.Song_title);
+						printf("\n");
+					}
+					else {
+						printf("----------\n");
+						printf("Artist: %s\n", temp->data.Artist);
+						printf("Album: %s\n", temp->data.Album_title);
+						printf("Song: %s\n", temp->data.Song_title);
+						printf("Genre: %s\n", temp->data.Genre);
+						printf("Length: %d:%d\n", temp->data.Song_length.Minutes, temp->data.Song_length.Seconds);
+						printf("Plays: %d\n", temp->data.Plays);
+						printf("Rating: %d\n", temp->data.Rating);
+						printf("\n");
+					}
+					
+
+					printed += 1;
+				}
+				temp = temp->next;
+			}
+		}
+		else {
+			while (temp != NULL) {
+				if (abv == 1) {
+					printf("----%d-----\n", (printed + 1));
+					printf("Artist: %s\n", temp->data.Artist);
+					printf("Song: %s\n", temp->data.Song_title);
+					printf("\n");
+				}
+				else {
 					printf("----------\n");
 					printf("Artist: %s\n", temp->data.Artist);
 					printf("Album: %s\n", temp->data.Album_title);
@@ -133,27 +169,131 @@ void display(Node* pHead, char* artist) {
 					printf("Length: %d:%d\n", temp->data.Song_length.Minutes, temp->data.Song_length.Seconds);
 					printf("Plays: %d\n", temp->data.Plays);
 					printf("Rating: %d\n", temp->data.Rating);
-					printf("----------\n");
+					printf("\n");
+				}
+				temp = temp->next;
+
+				printed += 1;
+			}
+		}
+	}
+	else {
+		printf("ERROR display- pHead is NULL\n");
+		
+	}
+	return printed;
+}
+
+ResultNode* getResultList(Node* pHead, char* artist) {
+
+	//list to track choices
+	ResultNode* choices = NULL;
+	
+	//main list
+	Node* temp = pHead;
+
+	if (pHead != NULL) {
+		if (artist != NULL) {
+			while (temp != NULL) {
+				if (strcmp(artist, temp->data.Artist) == 0) {
+
+					//create node for result
+					choices = createResultNode(choices, 1, temp);
 				}
 				temp = temp->next;
 			}
 		}
 		else {
 			while (temp != NULL) {
-				printf("----------\n");
-				printf("Artist: %s\n", temp->data.Artist);
-				printf("Album: %s\n", temp->data.Album_title);
-				printf("Song: %s\n", temp->data.Song_title);
-				printf("Genre: %s\n", temp->data.Genre);
-				printf("Length: %d:%d\n", temp->data.Song_length.Minutes, temp->data.Song_length.Seconds);
-				printf("Plays: %d\n", temp->data.Plays);
-				printf("Rating: %d\n", temp->data.Rating);
-				printf("----------\n");
+
+				//create node for result
+				choices = createResultNode(choices, 1, temp);
+
 				temp = temp->next;
 			}
 		}
+
+		//return front of result list created
+		if (choices != NULL) {
+			while (choices->prev != NULL) {
+				choices = choices->prev;
+			}
+		}
+		
 	}
 	else {
-		printf("ERROR display- pHead is NULL\n");
+		printf("ERROR getEditList- pHead NULL\n");
+	}
+
+	return choices;
+
+}
+
+ResultNode* getEdit(ResultNode* choices, int numRecords) {
+	ResultNode* result = choices;
+
+	int choice = 0;
+	char buffer[4];
+	int i;
+
+	while (choice == 0) {
+		//scanf("%d", &choice);
+		if (fgets(buffer, 3, stdin) != NULL) {
+
+			choice = atoi(buffer);
+
+			if (choice < numRecords && choice != 0) {
+				for (i = 1; i < choice; i++) {
+					result = result->next;
+				}
+				return result;
+			}
+			else {
+				choice = 0;
+				printf("please enter a valid choice");
+				strcpy(buffer, "\0\0\0");
+			}
+
+		}
+		else {
+			choice = 0;
+			printf("please enter a valid choice");
+			strcpy(buffer, "\0\0\0");
+		}
+	}
+	return NULL;
+}
+
+void edit(Node* pHead, char* artist) {
+	ResultNode* choices = getResultList(pHead, artist);
+	ResultNode* choice = NULL;
+	int numRecords = 0;
+
+	if (choices != NULL) {
+
+		while (choices != NULL) {
+			printf("----%d-----\n", (numRecords + 1));
+			printf("Artist: %s\n", choices->result->data.Artist);
+			printf("Song: %s\n", choices->result->data.Song_title);
+			printf("\n");
+
+			numRecords++;
+
+			choices = choices->next;
+		}
+		if (choices != NULL) {
+			while (choices->prev != NULL) {
+				choices = choices->prev;
+			}
+		}
+		printf("Enter record number to edit(1-%d)\n", numRecords);
+		choice = getEdit(choices, numRecords);
+		printf("----EDIT-----\n");
+		printf("Artist: %s\n", choice->result->data.Artist);
+		printf("Song: %s\n", choice->result->data.Song_title);
+		printf("\n");
+	}
+	else {
+		printf("No Records matching artist found.\n");
 	}
 }

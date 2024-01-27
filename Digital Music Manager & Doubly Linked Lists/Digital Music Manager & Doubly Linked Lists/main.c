@@ -55,9 +55,13 @@ int main() {
 
 	Node* pHead = load(INFILE);
 	
-	display(pHead, NULL);
+	display(pHead, NULL,1);
 
-	store(pHead);
+	edit(pHead, "Drake");
+
+	//store(pHead);
+
+	//ResultNode* rHead = getResultList(pHead, "Drake");
 
 	//menuMain();
 

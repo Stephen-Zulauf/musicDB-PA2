@@ -31,11 +31,20 @@ typedef struct node {
 	struct node* prev;
 }Node;
 
+typedef struct resultNode {
+	struct node* result;
+	struct resultNode* next;
+	struct resultNode* prev;
+}ResultNode;
+
 //create node and util function if (NULL passed for target create new list)
 //order: 0 in front of target, 1 behind
 //if pHead is passed as target with 0 then returned node will become new head
 //returns address of created node NULL on error
 Node* createNode(Node* target, int order, Record data);
+
+//result node identical to create node but points to a result
+ResultNode* createResultNode(ResultNode* target, int order, Node* result);
 
 //enter title and options seperated by comma (limit 400 chars for options)
 void pMenu(char* title, char* options, int numOptions);

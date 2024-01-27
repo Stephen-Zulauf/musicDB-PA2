@@ -12,9 +12,20 @@ void store(Node* pHead);
 
 // If NUll is passed for artist prints all records from head pHead passed
 //If artist passed will print all exact matches from pHead passed
-void display(Node* pHead, char* artist);
+// if abv == 0 full record printed. if abv == 1 abreviated record with number printed
+//returns number of records printed
+int display(Node* pHead, char* artist, int abv);
 
+//creates a list of nodes that match artist string, or returns all results if NULL passed
+//returns head of reults list, Null if no reults found TODO:deallocate search list
+ResultNode* getResultList(Node* pHead, char* artist);
 
+//get choice from user for edit menu
+ResultNode* getEdit(ResultNode* choices, int numRecords);
+
+//edit displays all records that match artist string then prompts which one to edit
+//if null passed for artist will list all records
+void edit(Node* pHead, char* artist);
 
 
 
