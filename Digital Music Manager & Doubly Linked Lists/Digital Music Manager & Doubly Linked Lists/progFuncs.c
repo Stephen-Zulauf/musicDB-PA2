@@ -314,3 +314,53 @@ void edit(Node* pHead, char* artist) {
 		printf("No Records matching artist found.\n");
 	}
 }
+
+void rate(Node* pHead, char* artist) {
+	ResultNode* choices = getResultList(pHead, artist);
+	int numRecords = 0;
+	int choice = 0;
+	int i;
+	char buffer[30];
+
+	if (choices != NULL) {
+		numRecords = display(pHead, artist, 1);
+
+		while (choice != (numRecords + 1)) {
+			system("cls");
+			numRecords = display(pHead, artist, 1);
+			printf("Enter record number to rate(1-%d), %d to exit\n", numRecords, (numRecords + 1));
+			choice = getNumericChoice(numRecords + 1);
+			if (choice == (numRecords + 1)) {
+				break;
+			}
+			for (i = 1; i < choice; i++) {
+				choices = choices->next;
+			}
+			system("cls");
+			printf("----RATE-----\n");
+			printf("Artist: %s\n", choices->result->data.Artist);
+			printf("Album: %s\n", choices->result->data.Album_title);
+			printf("Song: %s\n", choices->result->data.Song_title);
+			printf("Genre: %s\n", choices->result->data.Genre);
+			printf("Length: %d:%d\n", choices->result->data.Song_length.Minutes, choices->result->data.Song_length.Seconds);
+			printf("Plays: %d\n", choices->result->data.Plays);
+			printf("Rating: %d\n", choices->result->data.Rating);
+			printf("\n");
+			printf("Enter a rating 1-5;\n");
+			fgets(buffer, 2, stdin);
+			choices->result->data.Rating = atoi(buffer);
+
+			if (choices != NULL) {
+				while (choices->prev != NULL) {
+					choices = choices->prev;
+				}
+			}
+
+			choice = 0;
+		}
+
+	}
+	else {
+		printf("No Records matching artist found.\n");
+	}
+}

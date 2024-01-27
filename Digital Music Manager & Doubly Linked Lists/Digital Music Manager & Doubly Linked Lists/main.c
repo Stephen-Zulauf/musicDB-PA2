@@ -59,6 +59,8 @@ int main() {
 
 	edit(pHead, "Drake");
 
+	rate(pHead, "Drake");
+
 	//store(pHead);
 
 	//ResultNode* rHead = getResultList(pHead, "Drake");

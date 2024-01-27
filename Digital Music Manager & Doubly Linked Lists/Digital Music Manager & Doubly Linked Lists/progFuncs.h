@@ -24,6 +24,9 @@ ResultNode* getResultList(Node* pHead, char* artist);
 //if null passed for artist will list all records
 void edit(Node* pHead, char* artist);
 
+//edit but only for rate
+void rate(Node* pHead, char* artist);
+
 
 
 
