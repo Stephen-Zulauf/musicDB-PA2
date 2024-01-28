@@ -13,8 +13,9 @@ Node* store(Node* pHead);
 // If NUll is passed for artist prints all records from head pHead passed
 //If artist passed will print all exact matches from pHead passed
 // if abv == 0 full record printed. if abv == 1 abreviated record with number printed
+// if pause == 1 will pause after printing and prompt user
 //returns number of records printed
-int display(Node* pHead, char* artist, int abv);
+int display(Node* pHead, char* artist, int abv, int pause);
 
 //creates a list of nodes that match artist string, or returns all results if NULL passed
 //returns head of reults list, Null if no reults found TODO:deallocate search list

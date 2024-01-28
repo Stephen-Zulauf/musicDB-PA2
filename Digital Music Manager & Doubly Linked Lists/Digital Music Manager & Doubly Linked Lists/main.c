@@ -53,7 +53,7 @@ int main() {
 	createNode(pHead, 1, t3);
 	pHead = createNode(pHead, 0, t1);*/
 
-	Node* pHead = load(INFILE);
+	//Node* pHead = load(INFILE);
 
 	menuMain();
 

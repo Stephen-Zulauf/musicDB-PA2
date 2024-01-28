@@ -123,7 +123,7 @@ Node* store(Node* pHead) {
 }
 
 
-int display(Node* pHead, char* artist, int abv) {
+int display(Node* pHead, char* artist, int abv, int pause) {
 	Node* temp = pHead;
 	int printed = 0;
 	int choice = 0;
@@ -185,10 +185,13 @@ int display(Node* pHead, char* artist, int abv) {
 		printf("ERROR display- pHead is NULL\n");
 		
 	}
-	printf("Enter 1 to exit");
-	while (choice == 0) {
-		scanf("%d", &choice);
+	if (pause == 1) {
+		printf("Enter 1 to exit");
+		while (choice == 0) {
+			scanf("%d", &choice);
+		}
 	}
+	
 	return printed;
 }
 
@@ -244,14 +247,14 @@ void edit(Node* pHead, char* artist) {
 	int choice = 0;
 	int fChoice = 0;
 	int i;
-	char buffer[30];
+	char buffer[100];
 
 	if (choices != NULL) {
-		numRecords = display(pHead, artist, 1);
+		numRecords = display(pHead, artist, 1, 0);
 
 		while (choice != (numRecords + 1)) {
 			system("cls");
-			numRecords = display(pHead, artist, 1);
+			numRecords = display(pHead, artist, 1, 0);
 			printf("Enter record number to edit(1-%d), %d to exit\n", numRecords, (numRecords + 1));
 			choice = getNumericChoice(numRecords + 1);
 			if (choice == (numRecords + 1)) {
@@ -275,25 +278,25 @@ void edit(Node* pHead, char* artist) {
 			switch (fChoice) {
 			case 1:
 				printf("Artist: --\n");
-				fgets(choices->result->data.Artist, 29, stdin);
+				getSearchString(choices->result->data.Artist);
 				//need to reset choices if artist name is changed
 				choices = getResultList(pHead, artist);
 				break;
 			case 2:
 				printf("Album Title: --\n");
-				fgets(choices->result->data.Album_title, 29, stdin);
+				getSearchString(choices->result->data.Album_title);
 				break;
 			case 3:
 				printf("Song title: --\n");
-				fgets(choices->result->data.Song_title, 29, stdin);
+				getSearchString(choices->result->data.Song_title);
 				break;
 			case 4:
 				printf("Genre: --\n");
-				fgets(choices->result->data.Genre, 29, stdin);
+				getSearchString(choices->result->data.Genre);
 				break;
 			case 5:
 				printf("Genre: --\n");
-				fgets(choices->result->data.Genre, 29, stdin);
+				getSearchString(choices->result->data.Genre);
 				break;
 			case 6:
 				printf("Plays: --\n");
@@ -331,11 +334,11 @@ void rate(Node* pHead, char* artist) {
 	char buffer[30];
 
 	if (choices != NULL) {
-		numRecords = display(pHead, artist, 1);
+		numRecords = display(pHead, artist, 1, 0);
 
 		while (choice != (numRecords + 1)) {
 			system("cls");
-			numRecords = display(pHead, artist, 1);
+			numRecords = display(pHead, artist, 1, 0);
 			printf("Enter record number to rate(1-%d), %d to exit\n", numRecords, (numRecords + 1));
 			choice = getNumericChoice(numRecords + 1);
 			if (choice == (numRecords + 1)) {
@@ -499,7 +502,7 @@ void menuMain() {
 			case 3:
 				//display
 				printf("Enter artist to diplay; Enter for all\n");
-				display(pHead, getSearchString(cBuffer), 0);
+				display(pHead, getSearchString(cBuffer), 0, 1);
 				system("cls");
 				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
 				break;
