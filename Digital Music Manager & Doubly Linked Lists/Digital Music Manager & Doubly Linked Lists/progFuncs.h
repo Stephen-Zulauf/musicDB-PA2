@@ -2,6 +2,7 @@
 #define PROGFUNCS_H
 
 #include"utils.h"
+#include "art.h"
 
 //load csv file path at INFILE to linked list
 //returns head of list created/ null if error or no input

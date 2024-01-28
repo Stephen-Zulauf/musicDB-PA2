@@ -2,9 +2,10 @@
 #include "progFuncs.h"
 
 int main() {
+	menuMain();
 
 	/*TEST*/
-	Duration dur1 = {
+	/*Duration dur1 = {
 		3,35
 	};
 
@@ -44,7 +45,7 @@ int main() {
 		dur3,
 		100,
 		1
-	};
+	};*/
 
 	/*
 	Node* pHead = createNode(NULL, 0, t3);
@@ -54,8 +55,6 @@ int main() {
 	pHead = createNode(pHead, 0, t1);*/
 
 	//Node* pHead = load(INFILE);
-
-	menuMain();
 
 	//play(pHead, NULL, 0);
 	

@@ -186,7 +186,7 @@ int display(Node* pHead, char* artist, int abv, int pause) {
 		
 	}
 	if (pause == 1) {
-		printf("Enter 1 to exit");
+		printf("Enter 1 to exit\n");
 		while (choice == 0) {
 			scanf("%d", &choice);
 		}
@@ -454,6 +454,8 @@ void play(Node* pHead, char* artist, int abv) {
 
 //run main menu
 void menuMain() {
+	mainBanner();
+	printf("Reading from: %s\n", INFILE);
 	pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
 
 	Node* pHead = NULL;
@@ -475,11 +477,13 @@ void menuMain() {
 				pHead = load(INFILE);
 				if (pHead != NULL) {
 					system("cls");
+					mainBanner();
 					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
-					printf("Load Successful\n");
+					printf("Load Successful -> %s\n", INFILE);
 				}
 				else {
 					system("cls");
+					mainBanner();
 					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
 					printf("Problem loading file, check filename\n");
 				}
@@ -489,55 +493,102 @@ void menuMain() {
 				printf("Saving");
 				if (store(pHead) != NULL) {
 					system("cls");
+					mainBanner();
 					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
-					printf("Save Successful\n");
+					printf("Save Successful -> %s\n", OUTFILE);
 
 				}
 				else {
 					system("cls");
+					mainBanner();
 					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
 					printf("Problem saving file, check filename\n");
 				}
 				break;
 			case 3:
 				//display
-				printf("Enter artist to diplay; Enter for all\n");
-				display(pHead, getSearchString(cBuffer), 0, 1);
-				system("cls");
-				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				if (pHead != NULL) {
+					printf("Enter artist to diplay; Enter for all\n");
+					display(pHead, getSearchString(cBuffer), 0, 1);
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				}
+				else {
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("No records to display. Did you load any data?\n");
+				}
 				break;
 			case 4:
 				//edit
-				printf("Enter artist to edit records for; Enter for all\n");
-				edit(pHead, getSearchString(cBuffer));
-				system("cls");
-				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				if (pHead != NULL) {
+					printf("Enter artist to edit records for; Enter for all\n");
+					edit(pHead, getSearchString(cBuffer));
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				}
+				else {
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("No records to edit. Did you load any data?\n");
+				}
+				
 				break;
 			case 5:
 				//rate
-				printf("Enter artist to rate; Enter for all\n");
-				rate(pHead, getSearchString(cBuffer));
-				system("cls");
-				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				if (pHead != NULL) {
+					printf("Enter artist to rate; Enter for all\n");
+					rate(pHead, getSearchString(cBuffer));
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				}
+				else {
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("No records to rate. Did you load any data?\n");
+				}
+				break;
+				
 			case 6:
 				//play
-				printf("Enter artist to start playback from; Enter for begining\n");
-				play(pHead, getSearchString(cBuffer), 0);
-				system("cls");
-				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				if (pHead != NULL) {
+					printf("Enter artist to start playback from; Enter for begining\n");
+					play(pHead, getSearchString(cBuffer), 0);
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				}
+				else {
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("No records to play. Did you load any data?\n");
+				}
 				break;
 			case 7:
 				//exit
-				printf("saving....");
-				if (store(pHead) != NULL) {
-					printf("Save Successful");
+				if (pHead != NULL) {
+					printf("saving....");
+					if (store(pHead) != NULL) {
+						printf("Save Successful -> %s", OUTFILE);
 
+					}
+					else {
+						printf("Problem saving file, check filename");
+					}
+					delay(3);
 				}
 				else {
-					printf("Problem saving file, check filename");
+					printf("No record data loaded.\n ");
+					printf("No data will be saved\n ");
+					delay(3);
 				}
-				delay(3);
-
 				break;
 			default:
 				printf("please enter a valid choice\n");
