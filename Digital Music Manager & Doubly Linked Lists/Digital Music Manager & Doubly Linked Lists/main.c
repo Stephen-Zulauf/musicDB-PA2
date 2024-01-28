@@ -54,18 +54,22 @@ int main() {
 	pHead = createNode(pHead, 0, t1);*/
 
 	Node* pHead = load(INFILE);
+
+	menuMain();
+
+	//play(pHead, NULL, 0);
 	
-	display(pHead, NULL,1);
+	//display(pHead, NULL,1);
 
-	edit(pHead, "Drake");
+	//edit(pHead, "Drake");
 
-	rate(pHead, "Drake");
+	//rate(pHead, "Drake");
 
 	//store(pHead);
 
 	//ResultNode* rHead = getResultList(pHead, "Drake");
 
-	//menuMain();
+	
 
 	return 0;
 }

@@ -118,6 +118,19 @@ ResultNode* createResultNode(ResultNode* target, int order, Node* result) {
 
 }
 
+void delay(int number_of_seconds)
+{
+	// Converting time into milli_seconds
+	int milli_seconds = 1000 * number_of_seconds;
+
+	// Storing start time
+	clock_t start_time = clock();
+
+	// looping till required time is not achieved
+	while (clock() < start_time + milli_seconds)
+		;
+}
+
 int getNumericChoice(int numChoices) {
 
 	int choice = 0;
@@ -148,6 +161,32 @@ int getNumericChoice(int numChoices) {
 	
 }
 
+//todo: return null on empty input
+char * getSearchString(char* buffer) {
+	char temp[99];
+	char* loc;
+	if (fgets(temp, 98, stdin) != NULL) {
+		printf("intput %s", temp);
+		loc = strchr(temp, '\n');
+		*loc = '\0';
+
+		strcpy(buffer, temp);
+
+	}
+	else {
+		printf("please enter a valid choice");
+		strcpy(temp, "\0\0\0");
+	}
+
+	//check for empty
+	if (*buffer == '\0') {
+		return NULL;
+	}
+	else {
+		return buffer;
+	}
+}
+
 //enter title each option seperated by comma (limit 400 chars)
 void pMenu(char* title, char* options, int numOptions) {
 	int i;
@@ -168,57 +207,3 @@ void pMenu(char* title, char* options, int numOptions) {
 	printf("--------------------\n");
 }
 
-//run main menu
-void menuMain() {
-	pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
-
-	int choice = 0;
-	char buffer[4];
-
-	while (choice != 7) {
-		//scanf("%d", &choice);
-		if (fgets(buffer, 3, stdin) != NULL) {
-
-			choice = atoi(buffer);
-
-			switch (choice) {
-			case 1:
-				//load
-				printf("loading");
-				break;
-			case 2:
-				//store
-				printf("store");
-				break;
-			case 3:
-				//display
-				printf("display");
-				break;
-			case 4:
-				//edit
-				printf("edit");
-				break;
-			case 5:
-				//rate
-				printf("rate");
-			case 6:
-				//play
-				printf("play");
-				break;
-			case 7:
-				//exit
-				printf("exit");
-				break;
-			default:
-				printf("please enter a valid choice");
-			}
-
-		}
-		else {
-			printf("please enter a valid choice");
-			strcpy(buffer, "\0\0\0");
-		}
-
-		
-	}
-}

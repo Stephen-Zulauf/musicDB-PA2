@@ -90,7 +90,7 @@ Node* load(char* fileName) {
 	return NULL;
 }
 
-void store(Node* pHead) {
+Node* store(Node* pHead) {
 	FILE* outFile = fopen(OUTFILE, "w");
 
 	Node* temp = pHead;
@@ -113,9 +113,12 @@ void store(Node* pHead) {
 			fprintf(outFile, "%d\n",temp->data.Rating);
 			temp = temp->next;
 		}
+		fclose(outFile);
+		return pHead;
 	}
 	else {
 		printf("ERROR save- couldn't open file");
+		return NULL;
 	}
 }
 
@@ -123,6 +126,7 @@ void store(Node* pHead) {
 int display(Node* pHead, char* artist, int abv) {
 	Node* temp = pHead;
 	int printed = 0;
+	int choice = 0;
 
 	if (pHead != NULL) {
 		if (artist != NULL) {
@@ -180,6 +184,10 @@ int display(Node* pHead, char* artist, int abv) {
 	else {
 		printf("ERROR display- pHead is NULL\n");
 		
+	}
+	printf("Enter 1 to exit");
+	while (choice == 0) {
+		scanf("%d", &choice);
 	}
 	return printed;
 }
@@ -362,5 +370,183 @@ void rate(Node* pHead, char* artist) {
 	}
 	else {
 		printf("No Records matching artist found.\n");
+	}
+}
+
+void play(Node* pHead, char* artist, int abv) {
+	int printed = 0;
+
+	Node* temp = pHead;
+
+	if (pHead != NULL) {
+		if (artist != NULL) {
+			while (temp != NULL) {
+				if (strcmp(artist, temp->data.Artist) == 0) {
+
+					while (temp != NULL) {
+						system("cls");
+						if (abv == 1) {
+							printf("----%d-----\n", (printed + 1));
+							printf("Artist: %s\n", temp->data.Artist);
+							printf("Song: %s\n", temp->data.Song_title);
+							printf("\n");
+						}
+						else {
+							printf("----------\n");
+							printf("Artist: %s\n", temp->data.Artist);
+							printf("Album: %s\n", temp->data.Album_title);
+							printf("Song: %s\n", temp->data.Song_title);
+							printf("Genre: %s\n", temp->data.Genre);
+							printf("Length: %d:%d\n", temp->data.Song_length.Minutes, temp->data.Song_length.Seconds);
+							printf("Plays: %d\n", temp->data.Plays);
+							printf("Rating: %d\n", temp->data.Rating);
+							printf("\n");
+						}
+						//delay here
+						delay(5);
+						printed += 1;
+						temp = temp->next;
+					}
+					
+				}
+				if (temp != NULL) {
+					temp = temp->next;
+				}
+				
+			}
+		}
+		else {
+			while (temp != NULL) {
+				system("cls");
+				if (abv == 1) {
+					printf("----%d-----\n", (printed + 1));
+					printf("Artist: %s\n", temp->data.Artist);
+					printf("Song: %s\n", temp->data.Song_title);
+					printf("\n");
+				}
+				else {
+					printf("----------\n");
+					printf("Artist: %s\n", temp->data.Artist);
+					printf("Album: %s\n", temp->data.Album_title);
+					printf("Song: %s\n", temp->data.Song_title);
+					printf("Genre: %s\n", temp->data.Genre);
+					printf("Length: %d:%d\n", temp->data.Song_length.Minutes, temp->data.Song_length.Seconds);
+					printf("Plays: %d\n", temp->data.Plays);
+					printf("Rating: %d\n", temp->data.Rating);
+					printf("\n");
+				}
+				//delay here
+				delay(5);
+				temp = temp->next;
+
+				printed += 1;
+			}
+		}
+	}
+	else {
+		printf("ERROR display- pHead is NULL\n");
+
+	}
+}
+
+//run main menu
+void menuMain() {
+	pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+
+	Node* pHead = NULL;
+
+	int choice = 0;
+	char buffer[4];
+	char cBuffer[100];
+
+	while (choice != 7) {
+		//scanf("%d", &choice);
+		if (fgets(buffer, 3, stdin) != NULL) {
+
+			choice = atoi(buffer);
+
+			switch (choice) {
+			case 1:
+				//load
+				printf("loading");
+				pHead = load(INFILE);
+				if (pHead != NULL) {
+					system("cls");
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("Load Successful\n");
+				}
+				else {
+					system("cls");
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("Problem loading file, check filename\n");
+				}
+				break;
+			case 2:
+				//store
+				printf("Saving");
+				if (store(pHead) != NULL) {
+					system("cls");
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("Save Successful\n");
+
+				}
+				else {
+					system("cls");
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("Problem saving file, check filename\n");
+				}
+				break;
+			case 3:
+				//display
+				printf("Enter artist to diplay; Enter for all\n");
+				display(pHead, getSearchString(cBuffer), 0);
+				system("cls");
+				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				break;
+			case 4:
+				//edit
+				printf("Enter artist to edit records for; Enter for all\n");
+				edit(pHead, getSearchString(cBuffer));
+				system("cls");
+				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				break;
+			case 5:
+				//rate
+				printf("Enter artist to rate; Enter for all\n");
+				rate(pHead, getSearchString(cBuffer));
+				system("cls");
+				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+			case 6:
+				//play
+				printf("Enter artist to start playback from; Enter for begining\n");
+				play(pHead, getSearchString(cBuffer), 0);
+				system("cls");
+				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				break;
+			case 7:
+				//exit
+				printf("saving....");
+				if (store(pHead) != NULL) {
+					printf("Save Successful");
+
+				}
+				else {
+					printf("Problem saving file, check filename");
+				}
+				delay(3);
+
+				break;
+			default:
+				printf("please enter a valid choice\n");
+				
+			}
+
+		}
+		else {
+			printf("please enter a valid choice\n");
+			strcpy(buffer, "\0\0\0");
+		}
+
+
 	}
 }

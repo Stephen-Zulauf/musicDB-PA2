@@ -8,7 +8,7 @@
 Node* load(char* fileName);
 
 //stores linked list to csv at OUTFILE. Will write from pHead given. overwrites previous data.
-void store(Node* pHead);
+Node* store(Node* pHead);
 
 // If NUll is passed for artist prints all records from head pHead passed
 //If artist passed will print all exact matches from pHead passed
@@ -27,10 +27,12 @@ void edit(Node* pHead, char* artist);
 //edit but only for rate
 void rate(Node* pHead, char* artist);
 
+//display each record for a set amount of time from pHead
+//if abv == 0 full record printed. if abv == 1 abreviated record with number printed
+void play(Node* pHead, char* artist, int abv);
 
-
-
-
+//run main menu
+void menuMain();
 
 
 #endif // !PROGFUNCS_H

@@ -9,6 +9,7 @@
 #include<stdio.h>
 #include<stdlib.h>
 #include<string.h>
+#include<time.h>
 
 typedef struct duration {
 	int Minutes;
@@ -46,13 +47,14 @@ Node* createNode(Node* target, int order, Record data);
 //result node identical to create node but points to a result
 ResultNode* createResultNode(ResultNode* target, int order, Node* result);
 
+void delay(int number_of_seconds);
+
 int getNumericChoice(int numChoices);
+
+char* getSearchString(char* buffer);
 
 //enter title and options seperated by comma (limit 400 chars for options)
 void pMenu(char* title, char* options, int numOptions);
-
-//run main menu
-void menuMain();
 
 
 
