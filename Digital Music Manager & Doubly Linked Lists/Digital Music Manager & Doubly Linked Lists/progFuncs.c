@@ -452,19 +452,49 @@ void play(Node* pHead, char* artist, int abv) {
 	}
 }
 
+int delete(Node* pHead, char* title) {
+	Node* curr = pHead;
+	Node* prev = NULL;
+	Node* next = NULL;
+	int i = 0;
+
+	if (curr != NULL) {
+		while (curr != NULL) {
+			next = curr->next;
+			if (strcmp(curr->data.Song_title, title) == 0) {
+				next->prev = prev;
+				if (prev != NULL) {
+					prev->next = next;
+				}
+				free(curr);
+				curr = next;
+				next = curr->next;
+				i++;
+			}
+			prev = curr;
+			curr = next;
+		}
+	}
+	else {
+		printf("ERROR delete- pHead is NULL\n");
+	}
+	return i;
+}
+
 //run main menu
 void menuMain() {
 	mainBanner();
 	printf("Reading from: %s\n", INFILE);
-	pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+	pMenu("Main Menu", "load,store,display,edit,rate,play,delete,exit", 8);
 
 	Node* pHead = NULL;
 
 	int choice = 0;
+	int tempNum = 0;
 	char buffer[4];
 	char cBuffer[100];
 
-	while (choice != 7) {
+	while (choice != 8) {
 		//scanf("%d", &choice);
 		if (fgets(buffer, 3, stdin) != NULL) {
 
@@ -572,6 +602,30 @@ void menuMain() {
 				}
 				break;
 			case 7:
+				//delete
+				if (pHead != NULL) {
+					printf("Enter song title to remove\n");
+					tempNum = delete(pHead, getSearchString(cBuffer));
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					if (tempNum != 0) {
+						printf("%d Records removed.\n", tempNum);
+					}
+					else {
+						printf("No matching records found.\n");
+					}
+					
+				}
+				else {
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("No records to delete. Did you load any data?\n");
+				}
+				break;
+				
+			case 8:
 				//exit
 				if (pHead != NULL) {
 					printf("saving....");

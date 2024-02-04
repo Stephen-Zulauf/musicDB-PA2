@@ -33,6 +33,10 @@ void rate(Node* pHead, char* artist);
 //if abv == 0 full record printed. if abv == 1 abreviated record with number printed
 void play(Node* pHead, char* artist, int abv);
 
+//deletes a node based on song title
+//returns number deleted
+int delete(Node* pHead, char* title);
+
 //run main menu
 void menuMain();
 
