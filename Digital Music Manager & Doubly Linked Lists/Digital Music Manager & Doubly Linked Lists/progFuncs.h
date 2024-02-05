@@ -37,6 +37,13 @@ void play(Node* pHead, char* artist, int abv);
 //returns number deleted
 int delete(Node* pHead, char* title);
 
+//sort the linked list
+//method = 1 artist, 2 album, 3 rating, 4 playtime
+void sort(Node* pHead, int method);
+
+//menu for sort selection
+void menuSort(Node* pHead);
+
 //run main menu
 void menuMain();
 

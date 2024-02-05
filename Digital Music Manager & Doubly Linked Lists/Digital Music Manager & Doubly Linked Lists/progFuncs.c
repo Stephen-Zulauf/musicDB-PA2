@@ -481,11 +481,183 @@ int delete(Node* pHead, char* title) {
 	return i;
 }
 
+//method = 1 artist, 2 album, 3 rating, 4 playtime
+void sort(Node* pHead, int method) {
+	Node* curr = pHead;
+	Node* loopPos = pHead;
+	Node* smallest = pHead;
+	Record tempData;
+
+	switch (method) {
+	case 1:
+		//artist
+		while (loopPos != NULL) {
+
+			curr = loopPos;
+			smallest = loopPos;
+
+			while (curr != NULL) {
+				if (strcmp(curr->data.Artist, smallest->data.Artist) < 0) {
+					smallest = curr;
+				}
+				curr = curr->next;
+			}
+
+			tempData = loopPos->data;
+			loopPos->data = smallest->data;
+			smallest->data = tempData;
+
+			//advance loop
+			loopPos = loopPos->next;
+		}
+		break;
+	case 2:
+		//album title
+		while (loopPos != NULL) {
+
+			curr = loopPos;
+			smallest = loopPos;
+
+			while (curr != NULL) {
+				if (strcmp(curr->data.Album_title,smallest->data.Album_title) < 0) {
+					smallest = curr;
+				}
+				curr = curr->next;
+			}
+
+			tempData = loopPos->data;
+			loopPos->data = smallest->data;
+			smallest->data = tempData;
+
+			//advance loop
+			loopPos = loopPos->next;
+		}
+		break;
+	case 3:
+		//rating
+		while (loopPos != NULL) {
+
+			curr = loopPos;
+			smallest = loopPos;
+
+			while (curr != NULL) {
+				if (curr->data.Rating < smallest->data.Rating) {
+					smallest = curr;
+				}
+				curr = curr->next;
+			}
+
+			tempData = loopPos->data;
+			loopPos->data = smallest->data;
+			smallest->data = tempData;
+
+			//advance loop
+			loopPos = loopPos->next;
+		}
+		break;
+	case 4:
+		//plays
+		while (loopPos != NULL) {
+
+			curr = loopPos;
+			smallest = loopPos;
+
+			while (curr != NULL) {
+				if (curr->data.Plays < smallest->data.Plays) {
+					smallest = curr;
+				}
+				curr = curr->next;
+			}
+
+			tempData = loopPos->data;
+			loopPos->data = smallest->data;
+			smallest->data = tempData;
+
+			//advance loop
+			loopPos = loopPos->next;
+		}
+		break;
+	default:
+		//artist
+		while (loopPos != NULL) {
+
+			curr = loopPos;
+			smallest = loopPos;
+
+			while (curr != NULL) {
+				if (strcmp(curr->data.Artist, smallest->data.Artist) > 0) {
+					smallest = curr;
+				}
+				curr = curr->next;
+			}
+
+			tempData = loopPos->data;
+			loopPos->data = smallest->data;
+			smallest->data = tempData;
+
+			//advance loop
+			loopPos = loopPos->next;
+		}
+		break;
+	}
+}
+
+// prompt user for sorting method
+void menuSort(Node* pHead) {
+	int choice = 0;
+	char buffer[2];
+	system("cls");
+	pMenu("Sort by:", " Artist Name, Album Title, Rating, Number of Plays, Display Records, Exit", 6);
+
+	while (choice != 6) {
+		if (fgets(buffer, 2, stdin) != NULL) {
+			choice = atoi(buffer);
+
+			switch (choice) {
+			case 1:
+				sort(pHead, 1);
+				system("cls");
+				pMenu("Sort by:", " Artist Name, Album Title, Rating, Number of Plays, Display Records, Exit", 6);
+				printf("Sorted by Artist name");
+				break;
+			case 2:
+				sort(pHead, 2);
+				system("cls");
+				pMenu("Sort by:", " Artist Name, Album Title, Rating, Number of Plays, Display Records, Exit", 6);
+				printf("Sorted by Album Title");
+				break;
+			case 3:
+				sort(pHead, 3);
+				system("cls");
+				pMenu("Sort by:", " Artist Name, Album Title, Rating, Number of Plays, Display Records, Exit", 6);
+				printf("Sorted by Rating");
+				break;
+			case 4:
+				sort(pHead, 4);
+				system("cls");
+				pMenu("Sort by:", " Artist Name, Album Title, Rating, Number of Plays, Display Records, Exit", 6);
+				printf("Sorted by Number of plays");
+				break;
+			case 5:
+				system("cls");
+				display(pHead, NULL, 0, 1);
+				system("cls");
+				pMenu("Sort by:", " Artist Name, Album Title, Rating, Number of Plays, Display Records, Exit", 6);
+				break;
+			default:
+				buffer[0] = '\0';
+				buffer[1] = '\0';
+			}
+			
+		}
+	}
+}
+
 //run main menu
 void menuMain() {
 	mainBanner();
 	printf("Reading from: %s\n", INFILE);
-	pMenu("Main Menu", "load,store,display,edit,rate,play,delete,exit", 8);
+	pMenu("Main Menu", "load,store,display,edit,rate,play,delete,sort,exit", 9);
 
 	Node* pHead = NULL;
 
@@ -494,7 +666,7 @@ void menuMain() {
 	char buffer[4];
 	char cBuffer[100];
 
-	while (choice != 8) {
+	while (choice != 9) {
 		//scanf("%d", &choice);
 		if (fgets(buffer, 3, stdin) != NULL) {
 
@@ -624,8 +796,25 @@ void menuMain() {
 					printf("No records to delete. Did you load any data?\n");
 				}
 				break;
-				
 			case 8:
+				//sort
+				if (pHead != NULL) {
+					//printf("Enter artist to start playback from; Enter for begining\n");
+					//play(pHead, getSearchString(cBuffer), 0);
+					menuSort(pHead);
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				}
+				else {
+					system("cls");
+					mainBanner();
+					pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+					printf("No records to sort. Did you load any data?\n");
+				}
+				break;
+				
+			case 9:
 				//exit
 				if (pHead != NULL) {
 					printf("saving....");
@@ -645,7 +834,7 @@ void menuMain() {
 				}
 				break;
 			default:
-				printf("please enter a valid choice\n");
+				printf("please enter a choice\n");
 				
 			}
 
