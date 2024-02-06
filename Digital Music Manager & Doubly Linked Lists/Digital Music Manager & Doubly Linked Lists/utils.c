@@ -142,19 +142,22 @@ int getNumericChoice(int numChoices) {
 
 			choice = atoi(buffer);
 
-			if (choice <= numChoices && choice != 0) {
+			if (choice <= numChoices) {
+				if (choice < 0) {
+					choice = 0;
+				}
 				return choice;
 			}
 			else {
 				choice = 0;
-				printf("please enter a valid choice");
+				printf("please enter a valid choice\n");
 				strcpy(buffer, "\0\0\0");
 			}
 
 		}
 		else {
 			choice = 0;
-			printf("please enter a valid choice");
+			printf("please enter a valid choice\n");
 			strcpy(buffer, "\0\0\0");
 		}
 	}

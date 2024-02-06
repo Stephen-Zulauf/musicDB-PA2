@@ -452,6 +452,54 @@ void play(Node* pHead, char* artist, int abv) {
 	}
 }
 
+Node* insert(Node* pHead, Record newData) {
+	Node* insert = createNode(pHead, 0, newData);
+	if (insert == NULL) {
+		printf("ERROR insert create node failed");
+	}
+
+	return insert;
+}
+
+Node* menuInsert(Node* pHead) {
+	Node* newHead;
+	Record tempRecord;
+	char cBuffer[100];
+
+	system("cls");
+	printf("Please enter details for new record:\n");
+	printf("Artist Name:\n");
+	strcpy(tempRecord.Artist, getSearchString(cBuffer));
+	printf("Album Title:\n");
+	strcpy(tempRecord.Album_title, getSearchString(cBuffer));
+	printf("Song Title:\n");
+	strcpy(tempRecord.Song_title, getSearchString(cBuffer));
+	printf("Genre:\n");
+	strcpy(tempRecord.Genre, getSearchString(cBuffer));
+	printf("Song length, Minutes:\n");
+	tempRecord.Song_length.Minutes = atoi(getSearchString(cBuffer));
+	printf("Song length, seconds:\n");
+	tempRecord.Song_length.Seconds = atoi(getSearchString(cBuffer));
+	printf("Number of plays\n");
+	tempRecord.Plays = getNumericChoice(999);
+	printf("Rating\n");
+	tempRecord.Rating = getNumericChoice(5);
+
+	newHead = insert(pHead, tempRecord);
+	if (newHead != NULL) {
+		printf("---------------");
+		printf("created new Record");
+		printf("---------------");
+		delay(3);
+		return newHead;
+	}
+	else {
+		printf("failed to create new record");
+		delay(3);
+		return pHead;
+	}
+}
+
 int delete(Node* pHead, char* title) {
 	Node* curr = pHead;
 	Node* prev = NULL;
@@ -657,7 +705,7 @@ void menuSort(Node* pHead) {
 void menuMain() {
 	mainBanner();
 	printf("Reading from: %s\n", INFILE);
-	pMenu("Main Menu", "load,store,display,edit,rate,play,delete,sort,exit", 9);
+	pMenu("Main Menu", "load,store,display,edit,rate,play,delete,sort,insert,exit", 10);
 
 	Node* pHead = NULL;
 
@@ -666,7 +714,7 @@ void menuMain() {
 	char buffer[4];
 	char cBuffer[100];
 
-	while (choice != 9) {
+	while (choice != 10) {
 		//scanf("%d", &choice);
 		if (fgets(buffer, 3, stdin) != NULL) {
 
@@ -799,8 +847,6 @@ void menuMain() {
 			case 8:
 				//sort
 				if (pHead != NULL) {
-					//printf("Enter artist to start playback from; Enter for begining\n");
-					//play(pHead, getSearchString(cBuffer), 0);
 					menuSort(pHead);
 					system("cls");
 					mainBanner();
@@ -813,8 +859,15 @@ void menuMain() {
 					printf("No records to sort. Did you load any data?\n");
 				}
 				break;
-				
 			case 9:
+				//insert
+				pHead = menuInsert(pHead);
+				system("cls");
+				mainBanner();
+				pMenu("Main Menu", "load,store,display,edit,rate,play,exit", 7);
+				break;
+				
+			case 10:
 				//exit
 				if (pHead != NULL) {
 					printf("saving....");
