@@ -510,13 +510,22 @@ int delete(Node* pHead, char* title) {
 		while (curr != NULL) {
 			next = curr->next;
 			if (strcmp(curr->data.Song_title, title) == 0) {
-				next->prev = prev;
+				/// <summary>
+				/// NULL ACCESS VIOLATION
+				/// </summary>
+				if (next != NULL) {
+					next->prev = prev;
+				}
 				if (prev != NULL) {
 					prev->next = next;
 				}
+				if (curr != NULL) {
+					next = curr->next;
+				}
 				free(curr);
+				curr = NULL;
 				curr = next;
-				next = curr->next;
+				
 				i++;
 			}
 			prev = curr;
@@ -698,6 +707,107 @@ void menuSort(Node* pHead) {
 			}
 			
 		}
+	}
+}
+
+//shuffle
+ResultNode* shuffle(Node* pHead, int* test, int testSize) {
+
+	int size = 0;
+	int i, j, k;
+	Node* temp = pHead;
+	ResultNode* resultHead = NULL;
+
+
+	if (test == NULL) {
+		//regular operation
+		//get size of list
+		while (temp != NULL) {
+			size++;
+			temp = temp->next;
+		}
+
+		//make random order from size and create result node
+		while (size > 0) {
+			i = rand() % size;
+
+			for (j = 1; j < i; j++) {
+				if (temp != NULL) {
+					temp = temp->next;
+				}
+			}
+
+			resultHead = createResultNode(resultHead, 1, temp);
+
+			size -= 1;
+			temp = pHead;
+
+		}
+
+	}
+	else {
+		//use test order
+		for (i = 0; i < testSize; i++) {
+			j = test[i];
+
+			for (k = 1; k < j; k++) {
+				if (temp != NULL) {
+					temp = temp->next;
+				}
+			}
+
+			resultHead = createResultNode(resultHead, 1, temp);
+			temp = pHead;
+		}
+	}
+
+	//return front 
+	if (resultHead != NULL) {
+		while (resultHead->prev != NULL) {
+			resultHead = resultHead->prev;
+		}
+	}
+	
+
+	return resultHead;
+
+}
+
+void shufflePlay(ResultNode* pHead, int abv) {
+	int printed = 0;
+
+	ResultNode* temp = pHead;
+
+	if (temp != NULL) {
+		while (temp != NULL) {
+			system("cls");
+			if (abv == 1) {
+				printf("----%d-----\n", (printed + 1));
+				printf("Artist: %s\n", temp->result->data.Artist);
+				printf("Song: %s\n", temp->result->data.Song_title);
+				printf("\n");
+			}
+			else {
+				printf("----------\n");
+				printf("Artist: %s\n", temp->result->data.Artist);
+				printf("Album: %s\n", temp->result->data.Album_title);
+				printf("Song: %s\n", temp->result->data.Song_title);
+				printf("Genre: %s\n", temp->result->data.Genre);
+				printf("Length: %d:%d\n", temp->result->data.Song_length.Minutes, temp->result->data.Song_length.Seconds);
+				printf("Plays: %d\n", temp->result->data.Plays);
+				printf("Rating: %d\n", temp->result->data.Rating);
+				printf("\n");
+			}
+			//delay here
+			delay(3);
+			temp = temp->next;
+
+			printed += 1;
+		}
+	}
+	else {
+		printf("ERROR shufflePlay- pHead is NULL\n");
+
 	}
 }
 

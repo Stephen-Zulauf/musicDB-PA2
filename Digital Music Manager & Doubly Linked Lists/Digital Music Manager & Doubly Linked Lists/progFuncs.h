@@ -50,6 +50,12 @@ void sort(Node* pHead, int method);
 //menu for sort selection
 void menuSort(Node* pHead);
 
+//shuffle
+//returns head of shuffle order list
+ResultNode* shuffle(Node* pHead, int* test, int testSize);
+
+void shufflePlay(ResultNode* pHead, int abv);
+
 //run main menu
 void menuMain();
 

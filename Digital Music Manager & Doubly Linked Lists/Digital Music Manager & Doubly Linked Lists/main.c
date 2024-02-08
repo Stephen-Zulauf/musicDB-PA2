@@ -1,8 +1,13 @@
 #include "utils.h"
 #include "progFuncs.h"
+#include"tests.h"
 
 int main() {
-	menuMain();
+	srand(time(NULL));
+	//testInsert();
+	//testDelete();
+	testShuffle();
+	//menuMain();
 
 	/*TEST*/
 	/*Duration dur1 = {
